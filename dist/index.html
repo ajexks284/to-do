@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="main.js" defer></script>
+    <title>To-Do List</title>
+</head>
+<body>
+    <header id="header" class="header">
+        <div class="logo">To-Do List</div>
+        <!-- Searchbar -->
+    </header>
+
+    <section class="side-section">
+        <div class="projects-select-div">
+            <div class="home-div">Home</div>
+            <div class="today-div">Today</div>
+            <div class="this-week-div">This week</div>
+        </div>
+
+        <div class="projects-div">
+            <div class="projects-title-add">
+                <div class="projects-title">Projects</div>
+                <button class="projects-add">+</button>
+            </div>
+            <div class="projects-list">
+                <div class="default-project">Default</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="main-section">
+        <div class="main-section-title"></div>
+        <div class="to-do-items">
+            <!-- To Do Items -->
+            <button class="add-task"><span>+</span> Add Task</button>
+        </div>
+    </section>
+
+    <section class="modal-bg">
+        <section class="add-task-modal">
+            <form class="add-task-form" onsubmit="return false">
+                <input type="text" name="title" id="task-title" class="task-title" required>
+                <input type="date" name="task-due-date" id="task-due-date" required>
+                <select name="task-project" id="task-project">
+                    <option value="default" disabled>Default</option>
+                    <!-- Projects -->
+                </select>
+                <select name="task-priority" id="task-priority" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+                <button type="button" class="cancel-task" id="cancel-task">Cancel</button>
+                <button type="submit" class="submit-task" id="submit-task">Add task</button>
+            </form>
+        </section>
+    </section>
+</body>
+</html>
