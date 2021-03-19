@@ -1,5 +1,6 @@
-import { app } from './app';
 import { UI } from './ui';
+import { projectsUI } from './projects';
+import { counter } from './counter';
 
 // Set the minimum date to current day
 const date = new Date();
@@ -11,3 +12,5 @@ if (day < 10) day = `0${day}`;
 document.querySelector('#task-due-date').min = `${year}-${month}-${day}`;
 
 UI.render();
+projectsUI.render();
+counter.incrementProjectsCounter();
