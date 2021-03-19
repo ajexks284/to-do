@@ -1,4 +1,5 @@
 import { app } from './app';
+import { projectsUI } from './projects';
 import { events } from './pubsub';
 
 export const UI = (function() {
@@ -8,6 +9,10 @@ export const UI = (function() {
     const cancelButton = document.querySelector('.cancel-task');
     const modal = document.querySelector('.modal-bg');
     const itemsDiv = document.querySelector('.to-do-items');
+    const taskTitleInput = document.getElementById('task-title');
+    const taskDueDateInput = document.getElementById('task-due-date');
+    const taskProjectInput = document.getElementById('task-project');
+    const taskPriorityInput = document.getElementById('task-priority');
 
     // Functions
     function render() {
@@ -17,10 +22,14 @@ export const UI = (function() {
             }
         })
 
+        app.sortList();
+
         const toDo = app.getCurrentToDoList();
         toDo.forEach(todoItem => {
             createTask(todoItem);
         })
+
+        // console.table(toDo);
     }
 
     function createTask(task) {
@@ -101,6 +110,51 @@ export const UI = (function() {
         return color;
     }
 
+    // Task Projects
+    const taskProjects = document.querySelector('.task-project');
+    events.on('projectsRendered', (currentProjectList) => {
+        // Delete options first
+        taskProjects.innerHTML = '';
+
+        currentProjectList.forEach(project => {
+            const projectName = project.projectName;
+
+            // Create the project option
+            const option = document.createElement('option');
+            option.value = projectName;
+            option.appendChild(document.createTextNode(projectName));
+            taskProjects.appendChild(option);
+        })
+
+    })
+
+    events.on('projectAdded', (projectName) => {
+        const option = document.createElement('option');
+        option.value = projectName;
+        option.appendChild(document.createTextNode(projectName));
+        taskProjects.appendChild(option);
+    })
+
+    events.on('projectDeleted', (projectName) => {
+        // Remove project from project list
+        [...taskProjects].forEach(option => {
+            if (option.value.toLowerCase() === projectName.toLowerCase()) {
+                taskProjects.removeChild(option);
+            }
+        })
+
+        // Remove tasks that were in this project
+        const currentToDo = app.getCurrentToDoList();
+        let i = currentToDo.length;
+        
+        while (i--) {
+            if (currentToDo[i].project.toLowerCase() === projectName.toLowerCase()) {
+                events.emit('taskDeleted', currentToDo[i].title, currentToDo[i].dueDate);
+                render();
+            }
+        }
+    })
+
     // Events
     addTaskButton.addEventListener('click', () => {
         modal.style.display = 'block';
@@ -117,11 +171,6 @@ export const UI = (function() {
             addTaskForm.reset();
         }
     });
-
-    const taskTitleInput = document.getElementById('task-title');
-    const taskDueDateInput = document.getElementById('task-due-date');
-    const taskProjectInput = document.getElementById('task-project');
-    const taskPriorityInput = document.getElementById('task-priority');
 
     addTaskForm.addEventListener('submit', (e) => {
         // PubSub events
