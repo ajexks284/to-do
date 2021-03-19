@@ -16,9 +16,18 @@
 
     <section class="side-section">
         <div class="projects-select-div">
-            <div class="home-div">Home</div>
-            <div class="today-div">Today</div>
-            <div class="this-week-div">This week</div>
+            <div class="home-div">
+                <div class="home-div-name">Home</div>
+                <div id="home-div-counter" class="counter"></div>
+            </div>
+            <div class="today-div">
+                <div class="today-div-name">Today</div>
+                <div id="today-div-counter" class="counter"></div>
+            </div>
+            <div class="this-week-div">
+                <div class="this-week-div-name">This week</div>
+                <div id="this-week-div-counter" class="counter"></div>
+            </div>
         </div>
 
         <div class="projects-div">
@@ -26,9 +35,7 @@
                 <div class="projects-title">Projects</div>
                 <button class="projects-add">+</button>
             </div>
-            <div class="projects-list">
-                <div class="default-project">Default</div>
-            </div>
+            <div class="projects-list"></div>
         </div>
     </section>
 
@@ -45,9 +52,8 @@
             <form class="add-task-form" onsubmit="return false">
                 <input type="text" name="title" id="task-title" class="task-title" required>
                 <input type="date" name="task-due-date" id="task-due-date" required>
-                <select name="task-project" id="task-project">
-                    <option value="default" disabled>Default</option>
-                    <!-- Projects -->
+                <select name="task-project" class="task-project" id="task-project">
+                    <!-- <option value="Default" selected="selected">Default</option> -->
                 </select>
                 <select name="task-priority" id="task-priority" required>
                     <option value="1">1</option>
