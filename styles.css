@@ -55,6 +55,27 @@ body {
 	background: #ccc;
 }
 
+/* Counters */
+.home-div,
+.today-div,
+.this-week-div,
+.project-name-counter {
+	display: flex;
+	align-items: center;
+}
+
+.home-div-name,
+.today-div-name,
+.this-week-div-name,
+.project-name {
+	margin: 0 .5rem;
+}
+
+.counter {
+	font-size: .85rem;
+	color: #333;
+}
+
 .projects-title-add {
 	display: flex;
 	justify-content: space-between;
@@ -76,6 +97,9 @@ body {
 
 .projects-list {
 	margin-top: 1rem;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
 }
 
 /* Main Section */
@@ -153,7 +177,8 @@ body {
 	margin: 0 .5rem;
 }
 
-.to-do-item-delete {
+.to-do-item-delete,
+.project-delete {
 	background: transparent;
 	border: none;
 	outline: none;
@@ -178,4 +203,17 @@ body {
 	background: #ccc;
 	top: 50%;
 	transform: translateY(-50%);
+}
+
+/* projects */
+.project-div {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	font-size: 1.25rem;
+}
+
+.project-div {
+	margin: .25rem 0;
 }
