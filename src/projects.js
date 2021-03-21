@@ -1,22 +1,23 @@
 import { events } from "./pubsub";
+import { UI } from './ui';
+import { app } from './app';
 
 const projects = (function() {
-    const projects = [{ projectName: 'Default' },
-                      { projectName: 'School' },
-                      { projectName: 'Workout' },
-                      { projectName: 'Recreational' }];
+    let projects = [{ projectName: 'Default' }];
 
-    const createProject = (projectName) => {
+    function createProject(projectName) {
         return { projectName };
     }
 
-    const getCurrentProjectList = () => projects;
+    function getCurrentProjectList() {
+        return projects;
+    }
 
-    const addProject = (projectName) => {
+    function addProject(projectName) {
         projects.push(createProject(projectName));
     }
 
-    const deleteProject = (projectName) => {
+    function deleteProject(projectName) {
         for (let i = 0; i < projects.length; i++) {
             if (projects[i].projectName === projectName) {
                 projects.splice(i, 1);
@@ -25,12 +26,25 @@ const projects = (function() {
         }
     }
 
+    // localStorage
+    function saveProjectList() {
+        localStorage.setItem('project-list', JSON.stringify(projects))
+    }
+
+    function getProjectList() {
+        if (localStorage.getItem('project-list')) {
+            projects = JSON.parse(localStorage.getItem('project-list'));
+        }
+    }
+
     // PubSub events
     events.on('projectAdded', addProject);
     events.on('projectDeleted', deleteProject);
 
-    return { getCurrentProjectList }
+    return { getCurrentProjectList, saveProjectList, getProjectList }
 })();
+
+projects.getProjectList();
 
 export const projectsUI = (function() {
     // Cache DOM
@@ -52,7 +66,7 @@ export const projectsUI = (function() {
         // PubSub event
         events.emit('projectsRendered', currentProjectList);
 
-        // console.table(currentProjectList);
+        projects.saveProjectList();
     }
 
     function createProject(project) {
@@ -67,6 +81,17 @@ export const projectsUI = (function() {
         const projectName = document.createElement('div');
         projectName.classList = 'project-name';
         projectName.appendChild(document.createTextNode(project.projectName));
+        projectName.addEventListener('click', (e) => {
+            let taskList = document.querySelectorAll('.to-do-item');
+            [...taskList].forEach(task => {
+                const projectName = e.target.innerText;
+                if (task.id == projectName) {
+                    task.style.display = 'flex';
+                } else {
+                    task.style.display = 'none';
+                }
+            })
+        })
         projectNameAndCounterDiv.appendChild(projectName);
 
         const projectCounter = document.createElement('div');
@@ -90,9 +115,10 @@ export const projectsUI = (function() {
 
     projectAddButton.addEventListener('click', () => {
         const projectName = prompt('Enter name of project:'); // Will add input instead of prompt
-
-        events.emit('projectAdded', projectName);
-        render();
+        if (projectName) {
+            events.emit('projectAdded', projectName);
+            render();
+        }
     })
 
     return { render }
