@@ -20,6 +20,10 @@ counter.incrementCounters();
 const homeSectionFilter = document.querySelector('.home-div-name');
 homeSectionFilter.addEventListener('click', () => {
     let taskList = document.querySelectorAll('.to-do-item');
+
+    let sectionTitle = document.querySelector('.main-section-title');
+    sectionTitle.innerText = 'Home';
+
     [...taskList].forEach(task => {
         task.style.display = 'flex';
     })
@@ -27,6 +31,9 @@ homeSectionFilter.addEventListener('click', () => {
 
 const todaySectionFilter = document.querySelector('.today-div-name');
 todaySectionFilter.addEventListener('click', () => {
+    let sectionTitle = document.querySelector('.main-section-title');
+    sectionTitle.innerText = 'Today';
+
     let taskList = document.querySelectorAll('.to-do-item');
     [...taskList].forEach(task => {
         let todayDateDay = new Date().getDate();
@@ -65,6 +72,9 @@ export function returnItemsWithDisplayNone() {
 // Search bar
 const searchBar = document.querySelector('.search-bar');
 searchBar.addEventListener('keyup', (e) => {
+    let sectionTitle = document.querySelector('.main-section-title');
+    sectionTitle.innerText = 'Home';
+
     let text = e.target.value.toLowerCase();
     let taskList = document.querySelectorAll('.to-do-item');
 

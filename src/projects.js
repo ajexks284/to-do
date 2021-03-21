@@ -82,6 +82,9 @@ export const projectsUI = (function() {
         projectName.classList = 'project-name';
         projectName.appendChild(document.createTextNode(project.projectName));
         projectName.addEventListener('click', (e) => {
+            let sectionTitle = document.querySelector('.main-section-title');
+            sectionTitle.innerText = e.target.innerText;
+
             let taskList = document.querySelectorAll('.to-do-item');
             [...taskList].forEach(task => {
                 const projectName = e.target.innerText;
