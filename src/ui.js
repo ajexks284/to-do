@@ -1,6 +1,6 @@
 import { app } from './app';
-import { projectsUI } from './projects';
 import { events } from './pubsub';
+import { returnItemsWithDisplayNone } from './index';
 
 export const UI = (function() {
     // Cache DOM
@@ -16,27 +16,42 @@ export const UI = (function() {
 
     // Functions
     function render() {
+        const displayNoneObj = returnItemsWithDisplayNone();
+        
         [...itemsDiv.children].forEach(item => {
             if (item.classList.contains('to-do-item')) {
                 itemsDiv.removeChild(item);
             }
         })
 
+        const list = app.getCurrentToDoList();
         app.sortList();
 
-        const toDo = app.getCurrentToDoList();
-        toDo.forEach(todoItem => {
-            createTask(todoItem);
-        })
 
-        // console.table(toDo);
+        list.forEach(todoItem => {
+            let isHidden;
+            if (displayNoneObj[todoItem.title] === 'none') {
+                isHidden = true;
+            } else {
+                isHidden = false;
+            }
+
+            createTask(todoItem, isHidden);
+        });
+
+        app.saveToDoList();     
     }
 
-    function createTask(task) {
+    function createTask(task, isHidden) {
         const taskDiv = document.createElement('div');
         taskDiv.classList = 'to-do-item';
+        taskDiv.id = task.project;
         if (task.isCompleted) taskDiv.classList.add('completed');
         itemsDiv.appendChild(taskDiv);
+
+        if (isHidden) {
+            taskDiv.style.display = 'none';
+        }
 
         const taskPriorityAndTitle = document.createElement('div');
         taskPriorityAndTitle.classList = 'priority-title';
@@ -188,7 +203,5 @@ export const UI = (function() {
         addTaskForm.reset();
     };
 
-    return {
-        render,
-    }
+    return { render }
 })();
