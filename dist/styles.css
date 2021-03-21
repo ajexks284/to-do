@@ -215,5 +215,14 @@ body {
 }
 
 .project-div {
-	margin: .25rem 0;
+	padding: .5rem 0;
+}
+
+.project-name-counter {
+	padding: .25rem;
+	cursor: pointer;
+}
+
+.project-name-counter:hover {
+	background: #ccc;
 }
