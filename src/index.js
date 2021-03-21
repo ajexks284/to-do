@@ -1,6 +1,4 @@
-import { app } from './app';
 import { UI } from './ui';
-import { projects } from './projects';
 import { projectsUI } from './projects';
 import { counter } from './counter';
 
@@ -63,3 +61,19 @@ export function returnItemsWithDisplayNone() {
     
     return displayNoneItems;
 }
+
+// Search bar
+const searchBar = document.querySelector('.search-bar');
+searchBar.addEventListener('keyup', (e) => {
+    let text = e.target.value.toLowerCase();
+    let taskList = document.querySelectorAll('.to-do-item');
+
+    [...taskList].forEach(task => {
+        let taskName = task.firstElementChild.lastElementChild.innerText;
+        if (taskName.toLowerCase().indexOf(text) !== -1) {
+            task.style.display = 'flex';
+        } else {
+            task.style.display = 'none';
+        }
+    })
+})
