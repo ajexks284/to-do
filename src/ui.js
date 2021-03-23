@@ -19,9 +19,7 @@ export const UI = (function() {
         const displayNoneObj = returnItemsWithDisplayNone();
         
         [...itemsDiv.children].forEach(item => {
-            if (item.classList.contains('to-do-item')) {
-                itemsDiv.removeChild(item);
-            }
+            itemsDiv.removeChild(item);
         })
 
         const list = app.getCurrentToDoList();
@@ -29,13 +27,7 @@ export const UI = (function() {
 
 
         list.forEach(todoItem => {
-            let isHidden;
-            if (displayNoneObj[todoItem.title] === 'none') {
-                isHidden = true;
-            } else {
-                isHidden = false;
-            }
-
+            let isHidden = displayNoneObj[todoItem.title] === 'none';
             createTask(todoItem, isHidden);
         });
 
@@ -59,7 +51,7 @@ export const UI = (function() {
 
         const taskPriority = document.createElement('div');
         taskPriority.classList = 'to-do-item-priority to-do-item-complete';
-        taskPriority.style.borderColor = task.isCompleted ? '#ddd' : `${determinePriorityColor(task)}`;
+        taskPriority.style.backgroundColor = task.isCompleted ? '#ddd' : `${determinePriorityColor(task)}`;
         taskPriority.addEventListener('click', (e) => {
             e.target.parentElement.parentElement.classList.toggle('completed');
 
@@ -86,7 +78,6 @@ export const UI = (function() {
 
         const taskDeleteButton = document.createElement('button');
         taskDeleteButton.classList = 'to-do-item-delete';
-        taskDeleteButton.appendChild(document.createTextNode('x'));
         taskDeleteButton.addEventListener('click', (e) => {
             const title = e.target.parentElement.parentElement.firstElementChild.innerText;
             const date = e.target.previousSibling.innerText;
@@ -192,6 +183,15 @@ export const UI = (function() {
         events.emit('taskAdded', taskTitleInput.value, taskDueDateInput.value, taskProjectInput.value, taskPriorityInput.value)
 
         render();
+
+        // When adding a task, go back to home section, and remove filters
+        let sectionTitle = document.querySelector('.main-section-title');
+        sectionTitle.innerText = 'Home';
+        
+        let taskList = document.querySelectorAll('.to-do-item');
+        [...taskList].forEach(task => {
+            task.style.display = 'flex';
+        })
 
         // Resets form
         e.preventDefault();
