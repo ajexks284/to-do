@@ -1,6 +1,4 @@
 import { events } from "./pubsub";
-import { UI } from './ui';
-import { app } from './app';
 
 const projects = (function() {
     let projects = [{ projectName: 'Default' }];
@@ -107,7 +105,6 @@ export const projectsUI = (function() {
         if (project.projectName.toLowerCase() !== 'default') {
             const projectDelete = document.createElement('button');
             projectDelete.classList = 'project-delete';
-            projectDelete.appendChild(document.createTextNode('x'));
             projectDelete.addEventListener('click', (e) => {
                 events.emit('projectDeleted', e.target.previousElementSibling.firstElementChild.innerText);
                 render();
