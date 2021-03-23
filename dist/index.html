@@ -5,27 +5,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.iconmonstr.com/1.3.0/css/iconmonstr-iconic-font.min.css">
     <script src="main.js" defer></script>
     <title>To-Do List</title>
 </head>
 <body>
     <header id="header" class="header">
-        <div class="logo">To-Do List</div>
-        <input type="text" name="searchbar" id="searchBar" class="search-bar" placeholder="Quick find">
+        <div class="header-wrapper">
+            <div class="logo">To-Do List</div>
+            <div class="search-add">
+                <input type="text" name="searchbar" id="searchBar" class="search-bar" placeholder="Quick find">
+                <button class="add-task">+</button>
+            </div>
+        <button type="button" class="hamburger"><i class="im im-menu"></i></button>
+        </div>
     </header>
 
     <section class="side-section">
         <div class="projects-select-div">
             <div class="home-div">
-                <div class="home-div-name">Home</div>
+                <div class="home-div-name"><i class="im im-home"></i> Home</div>
                 <div id="home-div-counter" class="counter"></div>
             </div>
             <div class="today-div">
-                <div class="today-div-name">Today</div>
+                <div class="today-div-name"><i class="im im-date-o"></i> Today</div>
                 <div id="today-div-counter" class="counter"></div>
             </div>
             <div class="this-week-div">
-                <div class="this-week-div-name">This week</div>
+                <div class="this-week-div-name"><i class="im im-calendar"></i> Next 7 days</div>
                 <div id="this-week-div-counter" class="counter"></div>
             </div>
         </div>
@@ -41,9 +48,7 @@
 
     <section class="main-section">
         <div class="main-section-title">Home</div>
-        <div class="to-do-items">
-            <button class="add-task"><span>+</span> Add Task</button>
-        </div>
+        <div class="to-do-items"></div>
     </section>
 
     <section class="modal-bg">
