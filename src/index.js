@@ -72,9 +72,6 @@ export function returnItemsWithDisplayNone() {
 // Search bar
 const searchBar = document.querySelector('.search-bar');
 searchBar.addEventListener('keyup', (e) => {
-    let sectionTitle = document.querySelector('.main-section-title');
-    sectionTitle.innerText = 'Home';
-
     let text = e.target.value.toLowerCase();
     let taskList = document.querySelectorAll('.to-do-item');
 
@@ -86,4 +83,37 @@ searchBar.addEventListener('keyup', (e) => {
             task.style.display = 'none';
         }
     })
+})
+
+// When clicking on searchbar, go back to home section, and remove filters
+searchBar.addEventListener('focus', (e) => {
+    let sectionTitle = document.querySelector('.main-section-title');
+    sectionTitle.innerText = 'Home';
+    
+    let taskList = document.querySelectorAll('.to-do-item');
+    [...taskList].forEach(task => {
+        task.style.display = 'flex';
+    })
+    
+    let text = e.target.value.toLowerCase();
+    [...taskList].forEach(task => {
+        let taskName = task.firstElementChild.lastElementChild.innerText;
+        if (taskName.toLowerCase().indexOf(text) !== -1) {
+            task.style.display = 'flex';
+        } else {
+            task.style.display = 'none';
+        }
+    })
+
+})
+
+// Hamburger
+const hamburger = document.querySelector('.hamburger');
+const sideSection = document.querySelector('.side-section');
+hamburger.addEventListener('click', () => {
+    if (sideSection.style.display === 'flex') {
+        sideSection.style.display = 'none';
+    } else {
+        sideSection.style.display = 'flex';
+    }
 })
