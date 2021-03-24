@@ -55,16 +55,22 @@
         <section class="add-task-modal">
             <form class="add-task-form" onsubmit="return false">
                 <input type="text" name="title" id="task-title" class="task-title" required>
-                <input type="date" name="task-due-date" id="task-due-date" required>
-                <select name="task-project" class="task-project" id="task-project"></select>
-                <select name="task-priority" id="task-priority" required>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </select>
-                <button type="button" class="cancel-task" id="cancel-task">Cancel</button>
-                <button type="submit" class="submit-task" id="submit-task">Add task</button>
+                <div class="form-flex">
+                    <div class="duedate-project-priority">
+                        <input type="date" name="task-due-date" id="task-due-date" class="task-due-date" required>
+                        <select name="task-project" id="task-project" class="task-project"></select>
+                        <select name="task-priority" id="task-priority" class="task-priority" required>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                    <div class="cancel-submit">
+                        <button type="button" class="cancel-task" id="cancel-task">Cancel</button>
+                        <button type="submit" class="submit-task" id="submit-task">Add task</button>
+                    </div>
+                </div>
             </form>
         </section>
     </section>
