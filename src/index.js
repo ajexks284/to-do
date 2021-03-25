@@ -3,22 +3,24 @@ import { projectsUI } from './projects';
 import { counter } from './counter';
 import { parse, isWithinInterval, subDays, isToday, addDays, format } from 'date-fns';
 
-// Set the minimum date to current day
-document.querySelector('#task-due-date').min = format(new Date(), 'yyyy-MM-dd');
+// Set the minimum date of task due date to current day
+document.querySelector('.task-due-date').min = format(new Date(), 'yyyy-MM-dd');
 
+// Render tasks and projects and start the counters
 UI.render();
 projectsUI.render();
 counter.incrementCounters();
 
 
 // Filters
+const sectionTitle = document.querySelector('.main-section-title');
 const homeSectionFilter = document.querySelector('.home-div-name');
 homeSectionFilter.addEventListener('click', () => {
-    let taskList = document.querySelectorAll('.to-do-item');
-
-    let sectionTitle = document.querySelector('.main-section-title');
     sectionTitle.innerText = 'Home';
 
+    let taskList = document.querySelectorAll('.to-do-item');
+
+    // Make all tasks show
     [...taskList].forEach(task => {
         task.style.display = 'flex';
     })
@@ -26,10 +28,11 @@ homeSectionFilter.addEventListener('click', () => {
 
 const todaySectionFilter = document.querySelector('.today-div-name');
 todaySectionFilter.addEventListener('click', () => {
-    let sectionTitle = document.querySelector('.main-section-title');
     sectionTitle.innerText = 'Today';
 
     let taskList = document.querySelectorAll('.to-do-item');
+
+    // If the task's date is equal to today's date, show it, otherwise hide it
     [...taskList].forEach(task => {
         let taskDateDay = task.firstElementChild.nextElementSibling.firstElementChild.innerText;
         if (isToday(parse(taskDateDay, 'do MMM yyyy', new Date()))) {
@@ -42,10 +45,11 @@ todaySectionFilter.addEventListener('click', () => {
 
 const thisWeekSectionFilter = document.querySelector('.this-week-div-name');
 thisWeekSectionFilter.addEventListener('click', () => {
-    let sectionTitle = document.querySelector('.main-section-title');
     sectionTitle.innerText = 'Next 7 days';
-
+    
     let taskList = document.querySelectorAll('.to-do-item');
+
+    // If the task's date is in the next 7 days, show it, otherwise hide it
     [...taskList].forEach(task => {
         let taskDateDay = task.firstElementChild.nextElementSibling.firstElementChild.innerText;
         if (isWithinInterval(parse(taskDateDay, 'do MMM yyyy', new Date()), {
@@ -62,6 +66,8 @@ thisWeekSectionFilter.addEventListener('click', () => {
 // Helps keep display none on tasks after rendering
 export function returnItemsWithDisplayNone() {
     let taskList = document.querySelectorAll('.to-do-item');
+
+    // Object will keep track of each task's display
     const displayNoneItems = {};
 
     taskList.forEach(item => {
@@ -76,11 +82,11 @@ export function returnItemsWithDisplayNone() {
 }
 
 // Search bar
-const searchBar = document.querySelector('.search-bar');
-searchBar.addEventListener('keyup', (e) => {
+function searchForString(e) {
     let text = e.target.value.toLowerCase();
     let taskList = document.querySelectorAll('.to-do-item');
 
+    // Shows the tasks' which include the searched string in their title
     [...taskList].forEach(task => {
         let taskName = task.firstElementChild.lastElementChild.innerText;
         if (taskName.toLowerCase().indexOf(text) !== -1) {
@@ -89,11 +95,14 @@ searchBar.addEventListener('keyup', (e) => {
             task.style.display = 'none';
         }
     })
-})
+}
+
+const searchBar = document.querySelector('.search-bar');
+searchBar.addEventListener('keyup', searchForString);
 
 // When clicking on searchbar, go back to home section, and remove filters
 searchBar.addEventListener('focus', (e) => {
-    let sectionTitle = document.querySelector('.main-section-title');
+    // First show all the items and go to 'Home', then search for the string
     sectionTitle.innerText = 'Home';
     
     let taskList = document.querySelectorAll('.to-do-item');
@@ -101,16 +110,7 @@ searchBar.addEventListener('focus', (e) => {
         task.style.display = 'flex';
     })
     
-    let text = e.target.value.toLowerCase();
-    [...taskList].forEach(task => {
-        let taskName = task.firstElementChild.lastElementChild.innerText;
-        if (taskName.toLowerCase().indexOf(text) !== -1) {
-            task.style.display = 'flex';
-        } else {
-            task.style.display = 'none';
-        }
-    })
-
+    searchForString(e);
 })
 
 // Hamburger

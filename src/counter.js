@@ -12,9 +12,10 @@ export const counter = (function() {
     function incrementCounters() {
         const currentToDoList = app.getCurrentToDoList();
         
-        // Projects Counters
+        // Select all the projects counters
         const projectsCounter = document.querySelectorAll('.project-counter');
 
+        // Keep track of all the tasks in each project and put them in an object
         const counterForEachProject = currentToDoList.reduce((obj, task) => {
             let taskProject = task.project.toLowerCase();
             if (!obj.hasOwnProperty(taskProject)) {
@@ -25,6 +26,7 @@ export const counter = (function() {
             return obj;
         }, {})
 
+        // Use that object to update the counters
         projectsCounter.forEach(projectCounter => {
             const projectName = projectCounter.id.split('-')[0];
             const correspondingValue = counterForEachProject[projectName] || 0;

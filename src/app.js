@@ -12,7 +12,6 @@ export const app = (function() {
     // To Do Factory
     function createToDo(title, dueDate, project, priority) {
         let isCompleted = false;
-        project = project || 'Default';
         return {title, dueDate, project, priority, isCompleted};
     }
 
@@ -32,13 +31,12 @@ export const app = (function() {
         }
     }
 
-    function toggleCompleteStatus(title) {
-        toDoList.forEach(item => {
-            if (item.title === title) {
-                item.isCompleted = !item.isCompleted;
-                return;
+    function toggleCompleteStatus(title, date) {
+        for (let i = 0; i < toDoList.length; i++) {
+            if (toDoList[i].title === title && toDoList[i].dueDate === date) {
+                toDoList[i].isCompleted = !toDoList[i].isCompleted;
             }
-        })
+        }
     }
 
     // localStorage
@@ -57,12 +55,7 @@ export const app = (function() {
     events.on('taskDeleted', deleteToDo);
     events.on('taskAdded', addToDo);
 
-    return {
-        getCurrentToDoList,
-        sortList,
-        saveToDoList,
-        getToDoList,
-    }
+    return { getCurrentToDoList, sortList, saveToDoList, getToDoList }
 })();
 
 app.getToDoList();

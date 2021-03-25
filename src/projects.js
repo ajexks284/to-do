@@ -3,6 +3,7 @@ import { events } from "./pubsub";
 const projects = (function() {
     let projects = [{ projectName: 'Default' }];
 
+    // Project Factory
     function createProject(projectName) {
         return { projectName };
     }
@@ -19,7 +20,6 @@ const projects = (function() {
         for (let i = 0; i < projects.length; i++) {
             if (projects[i].projectName === projectName) {
                 projects.splice(i, 1);
-                return;
             }
         }
     }
@@ -50,12 +50,12 @@ export const projectsUI = (function() {
     const projectAddButton = document.querySelector('.projects-add');
 
     function render() {
-        [...projectList.children].forEach(item => {
-            if (item.classList.contains('project-div')) {
-                projectList.removeChild(item);
-            }
+        // Delete all projects first
+        [...projectList.children].forEach(project => {
+            projectList.removeChild(project);
         })
 
+        // Get the current list of projects and create them again
         const currentProjectList = projects.getCurrentProjectList();
         currentProjectList.forEach(project => {
             createProject(project);
@@ -64,6 +64,7 @@ export const projectsUI = (function() {
         // PubSub event
         events.emit('projectsRendered', currentProjectList);
 
+        // Save to localStorage
         projects.saveProjectList();
     }
 
@@ -80,12 +81,15 @@ export const projectsUI = (function() {
         projectName.classList = 'project-name';
         projectName.appendChild(document.createTextNode(project.projectName));
         projectName.addEventListener('click', (e) => {
+            // When clicking on a project, set the main title to that project's name
             let sectionTitle = document.querySelector('.main-section-title');
             sectionTitle.innerText = e.target.innerText;
 
+            // Filter the tasks
             let taskList = document.querySelectorAll('.to-do-item');
             [...taskList].forEach(task => {
                 const projectName = e.target.innerText;
+
                 if (task.id == projectName) {
                     task.style.display = 'flex';
                 } else {
@@ -105,8 +109,11 @@ export const projectsUI = (function() {
         if (project.projectName.toLowerCase() !== 'default') {
             const projectDelete = document.createElement('button');
             projectDelete.classList = 'project-delete';
+
+            // Emit event to delete the project
             projectDelete.addEventListener('click', (e) => {
                 events.emit('projectDeleted', e.target.previousElementSibling.firstElementChild.innerText);
+
                 render();
             })
             projectDiv.appendChild(projectDelete);
@@ -114,9 +121,10 @@ export const projectsUI = (function() {
     }
 
     projectAddButton.addEventListener('click', () => {
-        const projectName = prompt('Enter name of project:'); // Will add input instead of prompt
+        const projectName = prompt('Enter name of project:');
         if (projectName) {
             events.emit('projectAdded', projectName);
+
             render();
         }
     })
