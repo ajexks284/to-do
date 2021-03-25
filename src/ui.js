@@ -1,6 +1,7 @@
 import { app } from './app';
 import { events } from './pubsub';
 import { returnItemsWithDisplayNone } from './index';
+import { format, parse, parseISO } from 'date-fns';
 
 export const UI = (function() {
     // Cache DOM
@@ -73,14 +74,14 @@ export const UI = (function() {
 
         const taskDueDate = document.createElement('div');
         taskDueDate.classList = 'to-do-item-duedate';
-        taskDueDate.appendChild(document.createTextNode(task.dueDate));
+        taskDueDate.appendChild(document.createTextNode(format(parseISO(task.dueDate), 'do MMM yyyy')));
         taskDueDateAndDeleteButton.appendChild(taskDueDate);
 
         const taskDeleteButton = document.createElement('button');
         taskDeleteButton.classList = 'to-do-item-delete';
         taskDeleteButton.addEventListener('click', (e) => {
             const title = e.target.parentElement.parentElement.firstElementChild.innerText;
-            const date = e.target.previousSibling.innerText;
+            const date = format(parse(e.target.previousSibling.innerText, 'do MMM yyyy', new Date()), 'yyyy-MM-dd');
 
             // PubSub events
             events.emit('taskDeleted', title, date);

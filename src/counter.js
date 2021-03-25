@@ -1,11 +1,12 @@
 import { app } from './app';
 import { events } from './pubsub';
+import { parseISO, isWithinInterval, subDays, isToday, addDays } from 'date-fns';
 
 export const counter = (function() {
     // Cache DOM
     const homeCounter = document.querySelector('#home-div-counter');
     const todayCounter = document.querySelector('#today-div-counter');
-    // const thisWeekCounter = document.querySelector('#this-week-div-counter');
+    const thisWeekCounter = document.querySelector('#this-week-div-counter');
     
     // Counters
     function incrementCounters() {
@@ -35,12 +36,17 @@ export const counter = (function() {
         homeCounter.innerText = currentToDoList.length;
 
         // Today Counter
-        const date = new Date();
-        let day = date.getDate();
-        if (day < 10) day = `0${day}`;
-
         todayCounter.innerText = currentToDoList.reduce((acc, item) => {
-            if (item.dueDate.slice(-2) == day) return acc + 1;
+            if (isToday(parseISO(item.dueDate))) return acc + 1;
+            else return acc + 0;
+        }, 0);
+
+        // This week Counter
+        thisWeekCounter.innerText = currentToDoList.reduce((acc, item) => {
+            if (isWithinInterval(parseISO(item.dueDate), {
+                start: subDays(new Date(), 1),
+                end: addDays(new Date(), 6)
+             })) return acc + 1;
             else return acc + 0;
         }, 0);
     }

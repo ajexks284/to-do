@@ -1,15 +1,10 @@
 import { UI } from './ui';
 import { projectsUI } from './projects';
 import { counter } from './counter';
+import { parse, isWithinInterval, subDays, isToday, addDays, format } from 'date-fns';
 
 // Set the minimum date to current day
-const date = new Date();
-let year = date.getFullYear();
-let month = date.getMonth() + 1;
-if (month < 10) month = `0${month}`;
-let day = date.getDate();
-if (day < 10) day = `0${day}`;
-document.querySelector('#task-due-date').min = `${year}-${month}-${day}`;
+document.querySelector('#task-due-date').min = format(new Date(), 'yyyy-MM-dd');
 
 UI.render();
 projectsUI.render();
@@ -36,11 +31,8 @@ todaySectionFilter.addEventListener('click', () => {
 
     let taskList = document.querySelectorAll('.to-do-item');
     [...taskList].forEach(task => {
-        let todayDateDay = new Date().getDate();
-        if (todayDateDay < 10) todayDateDay = `0${todayDateDay}`;
-        let taskDateDay = task.firstElementChild.nextElementSibling.firstElementChild.innerText.slice(-2);
-
-        if (taskDateDay == todayDateDay) {
+        let taskDateDay = task.firstElementChild.nextElementSibling.firstElementChild.innerText;
+        if (isToday(parse(taskDateDay, 'do MMM yyyy', new Date()))) {
             task.style.display = 'flex';
         } else {
             task.style.display = 'none';
@@ -50,7 +42,21 @@ todaySectionFilter.addEventListener('click', () => {
 
 const thisWeekSectionFilter = document.querySelector('.this-week-div-name');
 thisWeekSectionFilter.addEventListener('click', () => {
-    // 
+    let sectionTitle = document.querySelector('.main-section-title');
+    sectionTitle.innerText = 'Next 7 days';
+
+    let taskList = document.querySelectorAll('.to-do-item');
+    [...taskList].forEach(task => {
+        let taskDateDay = task.firstElementChild.nextElementSibling.firstElementChild.innerText;
+        if (isWithinInterval(parse(taskDateDay, 'do MMM yyyy', new Date()), {
+            start: subDays(new Date(), 1),
+            end: addDays(new Date(), 6)
+         })) {
+            task.style.display = 'flex';
+        } else {
+            task.style.display = 'none';
+        }
+    })
 })
 
 // Helps keep display none on tasks after rendering
