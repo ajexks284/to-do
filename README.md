@@ -1,1 +1,3 @@
-Built a to-do list app using HTML, CSS and Javascript. Part of The Odin Project.
+Built a to-do list app using HTML, CSS and Javascript.\
+Part of The Odin Project.\
+Inspired by Todoist.\
