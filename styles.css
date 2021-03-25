@@ -136,6 +136,17 @@ body {
 	margin: 0 .5rem;
 }
 
+.project-name {
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	-ms-word-break: break-all;
+	word-break: break-word;
+	-ms-hyphens: auto;
+	-moz-hyphens: auto;
+	-webkit-hyphens: auto;
+	hyphens: auto;
+}
+
 .counter {
 	font-size: .85rem;
 	color: #333;
@@ -216,7 +227,14 @@ body {
 
 .to-do-item-title {
 	font-size: 1rem;
+	overflow-wrap: break-word;
 	word-wrap: break-word;
+	-ms-word-break: break-all;
+	word-break: break-word;
+	-ms-hyphens: auto;
+	-moz-hyphens: auto;
+	-webkit-hyphens: auto;
+	hyphens: auto;
 }
 
 /* Add task modal */
@@ -542,6 +560,7 @@ body {
 	.task-project,
 	.task-priority {
 		width: auto;
+		max-width: 80px;
 		font-size: .9rem;
 	}
 }
